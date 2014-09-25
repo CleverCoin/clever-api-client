@@ -2,7 +2,11 @@
 
 ## Summary
 
-This repository contains reference implementations of clients for the CleverCoin API. Currently, the following languages are supported:
+This repository contains reference implementations of clients for the CleverCoin API. 
+The API is currently in private beta. 
+If you want to join and receive an API key + secret, please contact support@clevercoin.com.
+
+Currently, the following languages are supported:
 
 - PHP
 
