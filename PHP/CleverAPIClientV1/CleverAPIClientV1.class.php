@@ -429,6 +429,7 @@ class CleverAPIClientV1 {
      *             [type] => buy
      *             [price] => 316.760000000
      *             [volume] => 0.06970000
+     *             [order] => 72957492
      *         )
      *
      *     [1] => Array
@@ -438,6 +439,7 @@ class CleverAPIClientV1 {
      *             [type] => sell
      *             [price] => 316.760000000
      *             [volume] => 0.12225000
+     *             [order] => 72957493
      *         )
      * )
      */
