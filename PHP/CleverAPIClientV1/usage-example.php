@@ -149,18 +149,20 @@ print_r($trades);
  * (
  *     [0] => Array
  *         (
- *             [date] => 1411475620
- *             [tid] => 263
- *             [price] => 316.76
- *             [amount] => 0.06970000
+ *             [transactionId] => 427
+ *             [time] => 1411475620
+ *             [type] => buy
+ *             [price] => 316.760000000
+ *             [volume] => 0.06970000
  *         )
  *
  *     [1] => Array
  *         (
- *             [date] => 1411475571
- *             [tid] => 261
- *             [price] => 316.76
- *             [amount] => 0.12225000
+ *             [transactionId] => 428
+ *             [time] => 1411475571
+ *             [type] => sell
+ *             [price] => 316.760000000
+ *             [volume] => 0.12225000
  *         )
  * )
  */
