@@ -9,12 +9,12 @@
  * Example usage of the CleverAPIClientV1 library.
  *
  * The private API is still in beta, please notify us at support@clevercoin.com if you are using this API.
- * This way we can notify you before we make any changes
+ * This way we can notify you before we make any changes.
  */
 
 require_once('CleverAPIClientV1.class.php');
 
-// Your api credentials
+// Your API credentials
 $key = 'KEY';
 $secret = 'SECRET';
 
