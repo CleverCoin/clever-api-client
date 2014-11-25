@@ -8,7 +8,7 @@ If you want to join and receive an API key + secret, please contact support@clev
 
 Currently, the following languages are supported:
 
-- PHP
+- PHP 5.4+
 
 ## Contributing
 
