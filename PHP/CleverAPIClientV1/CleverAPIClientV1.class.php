@@ -199,99 +199,65 @@ class CleverAPIClientV1 {
     }
 
     /**
-     * Query order book
+     * Query order book. Example return value:
+     * [
+     *     'timestamp' => 1411477485,
+     *     'bids' => [
+     *         [310.06, 0.201606],
+     *         [310, 0.17129],
+     *     ],
+     *     'asks' => [
+     *         [316.63, 0.3933],
+     *         [316.75, 0.3375],
+     *     ],
+     * ]
      *
      * @param boolean $group Group orders for the same price
      *
      * @return array
-     * Example return:
-     *
-     * Array
-     * (
-     *     [timestamp] => 1411477485
-     *     [bids] => Array
-     *         (
-     *             [0] => Array
-     *                 (
-     *                     [0] => 310.06
-     *                     [1] => 0.201606
-     *                 )
-     *
-     *             [1] => Array
-     *                 (
-     *                     [0] => 310
-     *                     [1] => 0.17129
-     *                 )
-     *
-     *     [asks] => Array
-     *         (
-     *             [0] => Array
-     *                 (
-     *                     [0] => 316.63
-     *                     [1] => 0.3933
-     *                 )
-     *
-     *             [1] => Array
-     *                 (
-     *                     [0] => 316.75
-     *                     [1] => 0.3375
-     *                 )
-     *
-     *         )
-     *
-     * )
      */
     public function getOrderBook($group) {
         return $this->executeCall(self::TYPE_PUBLIC, self::METHOD_GET, 'orderbook', ['group' => $group ? '1' : '0']);
     }
 
     /**
-     * Query ticker
+     * Query ticker. Example return value:
+     * [
+     *     'timestamp' => 1411477301,
+     *     'low' => '312.00',
+     *     'high' => '316.76',
+     *     'ask' => '316.46',
+     *     'bid' => '310.06',
+     *     'last' => '316.46',
+     *     'volume' => '13.50610000',
+     * ]
      *
      * @return array
-     * Example return:
-     *
-     * Array
-     * (
-     *     [timestamp] => 1411477301
-     *     [low] => 312.00
-     *     [high] => 316.76
-     *     [ask] => 316.46
-     *     [bid] => 310.06
-     *     [last] => 316.46
-     *     [volume] => 13.50610000
-     * )
      */
     public function getTicker() {
         return $this->executeCall(self::TYPE_PUBLIC, self::METHOD_GET, 'ticker');
     }
 
     /**
-     * Get the trades that took place on CleverCoin.
+     * Get the trades that took place on CleverCoin. Example return value:
+     * [
+     *     [
+     *         'date' => 1411475620,
+     *         'tid' => 263,
+     *         'price' => 316.76,
+     *         'amount' => 0.06970000,
+     *     ],
+     *     [
+     *         'date' => 1411475571,
+     *         'tid' => 261,
+     *         'price' => 316.76,
+     *         'amount' => 0.12225000,
+     *     ],
+     * ]
      *
      * @param integer $since Return transactions with an ID (tid) newer than this
      *
      * @return array
-     * Example return:
-     *
-     * Array
-     * (
-     *     [0] => Array
-     *         (
-     *             [date] => 1411475620
-     *             [tid] => 263
-     *             [price] => 316.76
-     *             [amount] => 0.06970000
-     *         )
-     *
-     *     [1] => Array
-     *         (
-     *             [date] => 1411475571
-     *             [tid] => 261
-     *             [price] => 316.76
-     *             [amount] => 0.12225000
-     *         )
-     * )
      */
     public function getTransactions($since = 0) {
         return $this->executeCall(self::TYPE_PUBLIC, self::METHOD_GET, 'transactions', ['since' => $since]);
@@ -300,36 +266,27 @@ class CleverAPIClientV1 {
     /* --- Private API calls --- */
 
     /**
-     * Cancel an order
+     * Cancel an order. Example return value:
+     * ['result' => 'success']
      *
-     * @param integer $orderID
+     * @param integer $orderID The ID of the order to cancel
      *
      * @return array
-     * Example return:
-     *
-     * Array
-     *  (
-     *      [result] => 'success'
-     *  )
      */
     public function cancelLimitedOrder($orderID) {
         return $this->executeCall(self::TYPE_PRIVATE, self::METHOD_DELETE, 'orders/limited', ['orderID' => $orderID]);
     }
 
     /**
-     * Withdraw bitcoins.
+     * Withdraw bitcoins. Example return value:
+     * ['withdrawalID' => 123]
      *
-     * @param string $amount
-     * @param string $toAddress
+     * Note: checking status of a withdrawalId through API is not yet supported
+     *
+     * @param string $amount The amount in BTC to withdraw; e.g. '1.23000000'
+     * @param string $toAddress The BTC recipient address
      *
      * @return array
-     * Example return:
-     * Array
-     *  (
-     *      [withdrawalID] => 123
-     *  )
-     *
-     * Note: checking status of a withdrawalId trough API is not yet supported
      */
     public function createBitcoinWithdrawal($amount, $toAddress) {
         return $this->executeCall(self::TYPE_PRIVATE, self::METHOD_POST, 'bitcoin/withdrawal', [], [
@@ -339,19 +296,14 @@ class CleverAPIClientV1 {
     }
 
     /**
-     * Create a limited order.
+     * Create a limited order. Example return value:
+     * ['orderID' => 1185799]
      *
-     * @param string $type ('bid' or 'ask')
-     * @param string $amount (in bitcoins)
-     * @param string $price (in euro)
+     * @param string $type 'bid' or 'ask'
+     * @param string $amount Limited order amount in BTC; e.g. '2.56000000'
+     * @param string $price Limited order price per BTC; e.g. '300.00'
      *
      * @return array
-     * Example return:
-     *
-     * Array
-     *  (
-     *      [orderID] => 1185799
-     *  )
      */
     public function createLimitedOrder($type, $amount, $price) {
         return $this->executeCall(self::TYPE_PRIVATE, self::METHOD_POST, 'orders/limited', [], [
@@ -362,112 +314,87 @@ class CleverAPIClientV1 {
     }
 
     /**
-     * Get bitcoin deposit address.
+     * Get bitcoin deposit address. Example return value:
+     * ['address' => '1H8hxnmjezTUquDPoHk9gKvmaDbcBtAzY9']
      *
      * @return array
-     * Example return:
-     *
-     * Array
-     * (
-     *     [address] => 1H8hxnmjezTUquDPoHk9gKvmaDbcBtAzY9
-     * )
      */
     public function getBitcoinDepositAddress() {
         return $this->executeCall(self::TYPE_PRIVATE, self::METHOD_GET, 'bitcoin/depositAddress');
     }
 
     /**
-     * Query open orders of this account.
+     * Query open orders of this account. Example return value:
+     * [
+     *     [
+     *         'orderID' => 1184185,
+     *         'type' => 'bid',
+     *         'amount' => '1.00000000',
+     *         'remainingAmount' => '1.00000000',
+     *         'price' => '16.95',
+     *         'isOpen' => true,
+     *     ],
+     *     [
+     *         'orderID' => 1184199,
+     *         'type' => 'ask',
+     *         'amount' => '1.00000000',
+     *         'remainingAmount' => '1.00000000',
+     *         'price' => '1310.06',
+     *         'isOpen' => true,
+     *     ],
+     * ]
      *
      * @param integer $orderID
      *
      * @return array
-     * Example return:
-     *
-     * Array
-     * (
-     *     [0] => Array
-     *         (
-     *             [orderID] => 1184185
-     *             [type] => bid
-     *             [amount] => 1.00000000
-     *             [remainingAmount] => 1.00000000
-     *             [price] => 16.95
-     *             [isOpen] => 1
-     *         )
-     *
-     *     [1] => Array
-     *         (
-     *             [orderID] => 1184199
-     *             [type] => ask
-     *             [amount] => 1.00000000
-     *             [remainingAmount] => 1.00000000
-     *             [price] => 1310.06
-     *             [isOpen] => 1
-     *         )
-     *
-     * )
      */
     public function getLimitedOrders($orderID = null) {
         return $this->executeCall(self::TYPE_PRIVATE, self::METHOD_GET, 'orders/limited', array_filter(['orderID' => $orderID]));
     }
 
     /**
-     * Get our latest trades.
+     * Get our latest trades. Example return value:
+     * [
+     *     [
+     *         'transactionId' => 427,
+     *         'time' => 1411475620,
+     *         'type' => 'buy',
+     *         'price' => '316.760000000',
+     *         'volume' => '0.06970000',
+     *         'order' => 72957492,
+     *     ],
+     *     [
+     *         'transactionId' => 428,
+     *         'time' => 1411475571,
+     *         'type' => 'sell',
+     *         'price' => '316.760000000',
+     *         'volume' => '0.12225000',
+     *         'order' => 72957493,
+     *     ],
+     * ]
      *
-     * @param integer $count
+     * @param integer $count Maximum number of trades to return; range 1 to 500
      *
      * @return array
-     * Example return:
-     *
-     * Array
-     * (
-     *     [0] => Array
-     *         (
-     *             [transactionId] => 427
-     *             [time] => 1411475620
-     *             [type] => buy
-     *             [price] => 316.760000000
-     *             [volume] => 0.06970000
-     *             [order] => 72957492
-     *         )
-     *
-     *     [1] => Array
-     *         (
-     *             [transactionId] => 428
-     *             [time] => 1411475571
-     *             [type] => sell
-     *             [price] => 316.760000000
-     *             [volume] => 0.12225000
-     *             [order] => 72957493
-     *         )
-     * )
      */
     public function getTrades($count = 100) {
         return $this->executeCall(self::TYPE_PRIVATE, self::METHOD_GET, 'trades', ['count' => $count]);
     }
 
     /**
-     * Query your wallet balances.
+     * Query your wallet balances. Example return value:
+     * [
+     *     [
+     *         'currency' => 'BTC',
+     *         'balance' => '0.00000000',
+     *     ],
+     *     [
+     *         'currency' => 'EUR',
+     *         'balance' => '0.00',
+     *     ],
+     * ]
      *
      * @return array
-     * Example return:
-     *
-     * Array
-     * (
-     *     [0] => Array
-     *         (
-     *             [currency] => BTC
-     *             [balance] => 0.00000000
-     *         )
-     *
-     *     [1] => Array
-     *         (
-     *             [currency] => EUR
-     *             [balance] => 0.00
-     *         )
-     *
-     * )
      */
     public function getWallets() {
         return $this->executeCall(self::TYPE_PRIVATE, self::METHOD_GET, 'wallets');
