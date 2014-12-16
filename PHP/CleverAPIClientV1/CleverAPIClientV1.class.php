@@ -228,6 +228,7 @@ class CleverAPIClientV1 {
      *     'high' => '316.76',
      *     'ask' => '316.46',
      *     'bid' => '310.06',
+     *     'previous' => '312.17',
      *     'last' => '316.46',
      *     'volume' => '13.50610000',
      * ]
